@@ -1,2 +1,33 @@
 ---
 # tasks file for ansible-role-self-signed-ssl
+
+- name: Install python-openssl
+  apt:
+    name: python-openssl
+
+- name: Make sure /etc/ssl/crt/, /etc/ssl/private/, and /etc/ssl/csr/ exist
+  file:
+    path: "/etc/ssl/{{item}}"
+    state: directory
+  loop:
+    - crt
+    - private
+    - csr
+  become: yes
+
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: /etc/ssl/private/example.com.pem
+
+- name: Generate an OpenSSL Certificate Signing Request
+  openssl_csr:
+    path: /etc/ssl/csr/example.com.csr
+    privatekey_path: /etc/ssl/private/example.com.pem
+    common_name: example.com
+
+- name: Generate a self signed openssl certificate
+  openssl_certificate:
+    path: /etc/ssl/crt/example.com.crt
+    privatekey_path: /etc/ssl/private/example.com.pem
+    csr_path: /etc/ssl/csr/example.com.csr
+    provider: selfsigned

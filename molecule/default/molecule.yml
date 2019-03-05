@@ -6,12 +6,13 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
-    image: centos:7
+  - name: ubuntu18
+    image: ubuntu:18.04
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
+  log: true
 scenario:
   name: default
 verifier:
