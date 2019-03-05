@@ -1,3 +1,6 @@
 ---
 # defaults file for ansible-role-self-signed-ssl
 site_name: "example.com"
+cert_dir: "/etc/ssl/certs"
+prikey_dir: "/etc/ssl/private"
+csr_dir: "/etc/ssl/csr"

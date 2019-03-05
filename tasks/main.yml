@@ -5,29 +5,29 @@
   apt:
     name: python-openssl
 
-- name: Make sure /etc/ssl/crt/, /etc/ssl/private/, and /etc/ssl/csr/ exist
+- name: Make sure /etc/ssl/certs/, /etc/ssl/private/, and /etc/ssl/csr/ exist
   file:
-    path: "/etc/ssl/{{item}}"
+    path: '{{item}}'
     state: directory
   loop:
-    - crt
-    - private
-    - csr
+    - '{{cert_dir}}'
+    - '{{prikey_dir}}'
+    - '{{csr_dir}}'
   become: yes
 
 - name: Generate an OpenSSL private key
   openssl_privatekey:
-    path: "/etc/ssl/private/{{site_name}}.pem"
+    path: '{{prikey_dir}}/{{site_name}}.pem'
 
 - name: Generate an OpenSSL Certificate Signing Request
   openssl_csr:
-    path: /etc/ssl/csr/example.com.csr
-    privatekey_path: "/etc/ssl/private/{{site_name}}.pem"
-    common_name: "{{site_name}}"
+    path: '{{csr_dir}}/{{site_name}}.csr'
+    privatekey_path: '{{prikey_dir}}/{{site_name}}.pem'
+    common_name: '{{site_name}}'
 
 - name: Generate a self signed openssl certificate
   openssl_certificate:
-    path: /etc/ssl/crt/example.com.crt
-    privatekey_path: "/etc/ssl/private/{{site_name}}.pem"
-    csr_path: "/etc/ssl/csr/{{site_name}}.csr"
+    path: '{{cert_dir}}/{{site_name}}.crt'
+    privatekey_path: '{{prikey_dir}}/{{site_name}}.pem'
+    csr_path: '{{csr_dir}}/{{site_name}}.csr'
     provider: selfsigned
