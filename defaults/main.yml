@@ -1,2 +1,3 @@
 ---
 # defaults file for ansible-role-self-signed-ssl
+site_name: "example.com"
