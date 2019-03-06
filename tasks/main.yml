@@ -19,12 +19,14 @@
 - name: Generate an OpenSSL private key
   openssl_privatekey:
     path: '{{ prikey_dir }}/{{ site_name }}.pem'
+  become: yes
 
 - name: Generate an OpenSSL Certificate Signing Request
   openssl_csr:
     path: '{{ csr_dir }}/{{ site_name }}.csr'
     privatekey_path: '{{ prikey_dir }}/{{ site_name }}.pem'
     common_name: '{{ site_name }}'
+  become: yes
 
 - name: Generate a self signed openssl certificate
   openssl_certificate:
@@ -32,3 +34,4 @@
     privatekey_path: '{{ prikey_dir }}/{{ site_name }}.pem'
     csr_path: '{{ csr_dir }}/{{ site_name }}.csr'
     provider: selfsigned
+  become: yes
