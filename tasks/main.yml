@@ -7,27 +7,27 @@
 
 - name: Make sure /etc/ssl/certs/, /etc/ssl/private/, and /etc/ssl/csr/ exist
   file:
-    path: '{{item}}'
+    path: '{{ item }}'
     state: directory
   loop:
-    - '{{cert_dir}}'
-    - '{{prikey_dir}}'
-    - '{{csr_dir}}'
+    - '{{ cert_dir }}'
+    - '{{ prikey_dir }}'
+    - '{{ csr_dir }}'
   become: yes
 
 - name: Generate an OpenSSL private key
   openssl_privatekey:
-    path: '{{prikey_dir}}/{{site_name}}.pem'
+    path: '{{ prikey_dir }}/{{ site_name }}.pem'
 
 - name: Generate an OpenSSL Certificate Signing Request
   openssl_csr:
-    path: '{{csr_dir}}/{{site_name}}.csr'
-    privatekey_path: '{{prikey_dir}}/{{site_name}}.pem'
-    common_name: '{{site_name}}'
+    path: '{{ csr_dir }}/{{ site_name }}.csr'
+    privatekey_path: '{{ prikey_dir }}/{{ site_name }}.pem'
+    common_name: '{{ site_name }}'
 
 - name: Generate a self signed openssl certificate
   openssl_certificate:
-    path: '{{cert_dir}}/{{site_name}}.crt'
-    privatekey_path: '{{prikey_dir}}/{{site_name}}.pem'
-    csr_path: '{{csr_dir}}/{{site_name}}.csr'
+    path: '{{ cert_dir }}/{{ site_name }}.crt'
+    privatekey_path: '{{ prikey_dir }}/{{ site_name }}.pem'
+    csr_path: '{{ csr_dir }}/{{ site_name }}.csr'
     provider: selfsigned
