@@ -4,6 +4,7 @@
 - name: Install python-openssl
   apt:
     name: python-openssl
+  become: yes
 
 - name: Make sure /etc/ssl/certs/, /etc/ssl/private/, and /etc/ssl/csr/ exist
   file:
